@@ -6,7 +6,7 @@ using namespace std;
 DRAWING_DATA gDrawData; // global data
 void drawParabola(HWND);
 LRESULT CALLBACK DlgAxis(HWND hdlg,UINT mess,WPARAM more,LPARAM pos);
-
+void drawCartesianSystem(HDC hdc);
 void reDraw(HWND hwnd)
 {
   InvalidateRect(hwnd, NULL, 1);
@@ -52,7 +52,7 @@ void createMemoryBitmap(HDC hdc)
 
 void initialize(HWND hwnd, HDC hdc)
 {
-  gDrawData.hDrawPen=CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+  gDrawData.hDrawPen=CreatePen(PS_DOT, 1, RGB(255, 0, 0));
 
   gDrawData.maxBoundary.cx = GetSystemMetrics(SM_CXSCREEN);
   gDrawData.maxBoundary.cy = GetSystemMetrics(SM_CYSCREEN);
@@ -63,6 +63,7 @@ void initialize(HWND hwnd, HDC hdc)
 
   createMemoryBitmap(hdc);
   setDrawMode(READY_MODE, hwnd);
+//  drawCartesianSystem(gDrawData.hdcMem);
 }
 
 void cleanup()
@@ -95,7 +96,6 @@ void addPoint(HWND hwnd)
     case DRAW_MODE:
       /* the coordinates of the centre is stored
          and the ellipse is drawn */
-      SelectObject(gDrawData.hdcMem, gDrawData.hDrawPen);   //selects pen in the memory DC
       drawParabola(hwnd);
       reDraw(hwnd);
       break;
@@ -104,8 +104,29 @@ void addPoint(HWND hwnd)
   }
 }
 
+void drawCartesianSystem(HDC hdc){
+  SelectObject(hdc, gDrawData.hDrawPen);   //selects pen in the memory DC
+  int cx = GetSystemMetrics(SM_CXSCREEN)/2;
+  int cy = GetSystemMetrics(SM_CYSCREEN)/2;
+  MoveToEx(hdc, -300 + cx, cy, NULL);
+  LineTo(hdc, 300 + cx, cy);
+  MoveToEx(hdc, cx, 300 + cy, NULL);
+  LineTo(hdc, cx, -300 + cy);
+
+
+  for(int y=-300; y<300; y = y + 2){
+    for(int x=-300; x<300; x = x + 2){
+        SetPixel(hdc, cx + x, cy + y, RGB(0,0,0));
+    }
+  }
+}
+
 void drawImage(HDC hdc)
 {
+  /* Performs a bit-block transfer of the color data
+  corresponding to a rectangle of pixels
+  from the specified source device context into a destination device context
+  */
   BitBlt(hdc, 0, 0, gDrawData.maxBoundary.cx,
     gDrawData.maxBoundary.cy, gDrawData.hdcMem,
     0, 0, SRCCOPY);
@@ -149,7 +170,7 @@ void drawParabola(HWND hwnd)
   int x,y;
   x=0;
   y=0;
-  plot_sympoint(x,y, RGB(0,0,0));   //Plotted all the axes point
+  plot_sympoint(x,y, RGB(0,0,255));   //Plotted all the axes point
   //Starting from (0,0)
   cout<<"'y' being incremented!"<<endl;
   double decisionParam = gDrawData.latusRectum*0.5 - 1;
@@ -165,7 +186,7 @@ void drawParabola(HWND hwnd)
     }
     y++;
     cout<<"x:"<<x<<" y:"<<y<<" DecP:"<<decisionParam<<endl;
-    plot_sympoint(x,y, RGB(0,0,0));
+    plot_sympoint(x,y, RGB(0,0,255));
   }
 
   cout<<"'x' being incremented!"<<endl;
@@ -184,7 +205,7 @@ void drawParabola(HWND hwnd)
     }
     x++;
     cout<<"x:"<<x<<" y:"<<y<<" DecP:"<<decisionParam<<endl;
-    plot_sympoint(x,y, RGB(0,0,0));
+    plot_sympoint(x,y, RGB(0,0,255));
   }
 }
 
@@ -253,6 +274,7 @@ LRESULT CALLBACK WindowF(HWND hwnd,UINT message,WPARAM wParam,
 
     case WM_PAINT:
       hdc = BeginPaint(hwnd, &ps);
+//      cout<<"WM_PAINT"<<endl;
       drawImage(hdc);
       EndPaint(hwnd, &ps);
       break;

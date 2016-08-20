@@ -14,3 +14,18 @@
 1471670991 source:z:\onedrive\graphicslab\parabola\wmain.cpp
 	<windows.h>
 
+1471698656 source:z:\git\graphics-lab-cs462\parabola\parabola.cpp
+	<math.h>
+	<windows.h>
+	"Parabola.h"
+	<iostream>
+
+1471672191 z:\git\graphics-lab-cs462\parabola\parabola.h
+
+1471674509 source:z:\git\graphics-lab-cs462\parabola\parabola.rc
+	<windows.h>
+	"Parabola.h"
+
+1471670991 source:z:\git\graphics-lab-cs462\parabola\wmain.cpp
+	<windows.h>
+
