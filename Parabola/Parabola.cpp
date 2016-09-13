@@ -63,7 +63,7 @@ void initialize(HWND hwnd, HDC hdc)
 
   createMemoryBitmap(hdc);
   setDrawMode(READY_MODE, hwnd);
-//  drawCartesianSystem(gDrawData.hdcMem);
+//drawCartesianSystem(gDrawData.hdcMem);
 }
 
 void cleanup()
@@ -175,7 +175,7 @@ void drawParabola(HWND hwnd)
   cout<<"'y' being incremented!"<<endl;
   double decisionParam = gDrawData.latusRectum*0.5 - 1;
   double limit = gDrawData.latusRectum/(double)2;
-
+/* Region where |y| >= 1*/
   while(y < limit && y<=gDrawData.range){
     if(decisionParam<0){
         x++;
@@ -190,7 +190,7 @@ void drawParabola(HWND hwnd)
   }
 
   cout<<"'x' being incremented!"<<endl;
-
+/* Region where |y| < 1*/
   decisionParam=(x+1)*gDrawData.latusRectum - (y+0.5)*(y+0.5);    //Initial value of decision parameter
   while(y<=gDrawData.range)    //Condition true until you move out of region with |m| <= 1 line
   {
