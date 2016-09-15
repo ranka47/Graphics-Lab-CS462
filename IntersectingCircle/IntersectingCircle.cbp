@@ -37,7 +37,14 @@
 			<Add library="kernel32" />
 			<Add library="comctl32" />
 		</Linker>
-		<Unit filename="main.cpp" />
+		<Unit filename="DrawUtil.cpp">
+			<Option compiler="gcc" use="1" buildCommand="$compiler -std=c++11 $options $includes -c $file -o $object" />
+		</Unit>
+		<Unit filename="Fill.h" />
+		<Unit filename="Radius.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="WMain.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
